@@ -1,0 +1,70 @@
+version: '3.3'
+
+services:
+  mysql-db-catalog:
+     image: mysql:5.7
+     ports:
+       - "3306:3306"
+     environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: hyc
+       MYSQL_USER: hyc
+       MYSQL_PASSWORD: hyc
+  mysql-db-rating:
+     image: mysql:5.7
+     ports:
+       - "3307:3306"
+     environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: hyc
+       MYSQL_USER: hyc
+       MYSQL_PASSWORD: hyc
+
+  eureka-server:
+    image: bniesobski/hyc-eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      PORT: 8761
+
+  beer-catalog:
+     depends_on:
+       - mysql-db-catalog
+     links:
+       - eureka-server
+     image: bniesobski/hyc-beer-catalog
+     ports:
+       - "8020:8020"
+     environment:
+       DB_USERNAME: hyc
+       DB_PASSWORD: hyc
+       DB_NAME: hyc
+       DB_PORT: 3306
+       PORT: 8020
+       EUREKA_PORT: 8761
+
+  beer-rating:
+     depends_on:
+       - mysql-db-rating
+     links:
+       - eureka-server
+     image: bniesobski/hyc-beer-rating
+     ports:
+       - "8030:8030"
+     environment:
+       DB_USERNAME: hyc
+       DB_PASSWORD: hyc
+       DB_NAME: hyc
+       DB_PORT: 3306
+       PORT: 8030
+       EUREKA_PORT: 8761
+
+  zuul-gateway:
+       links:
+         - eureka-server
+       image: bniesobski/hyc-zuul-gateway
+       ports:
+         - "8040:8040"
+       environment:
+         PORT: 8040
+         EUREKA_PORT: 8761

@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: beer-catalog # Application name
+  datasource:
+    username: ${DB_USERNAME:hyc} # Database User
+    password: ${DB_PASSWORD:hyc} # Database User's password
+    url: jdbc:mysql://mysql-db-catalog:${DB_PORT:3306}/${DB_NAME:hyc} # Database connection URL, hyc is the name of the Mysql's database
+  jpa:
+    hibernate:
+      ddl-auto: create # Table creation strategy
+
+server:
+  port: ${PORT:8020}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:${EUREKA_PORT}/eureka/

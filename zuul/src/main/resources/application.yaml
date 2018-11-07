@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: zuul-gateway
+
+server:
+  port: ${PORT:8040}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:${EUREKA_PORT}/eureka/
+
+zuul:
+  routes:
+    catalog:
+      path: /catalog/**
+      serviceId: beer-catalog
+    rating:
+      path: /rating/**
+      serviceId: beer-rating
