@@ -2,7 +2,7 @@
 
 Microservices application presented on Hack your career lecture on 06.11.2018.
 
-##What it does
+## What it does
 
 It manages Beer entity through simple CRUD REST API and provide API to rate chosen beer.
 
